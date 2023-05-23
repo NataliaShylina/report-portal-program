@@ -1,18 +1,19 @@
-package org.example.base;
+package org.example.base.testng;
 
 import org.example.domain.Credentials;
 import org.example.domain.UserType;
 import org.example.page.DemoDashBoardPage;
 import org.example.page.LoginPage;
 import org.example.provider.CredentialsProvider;
-import org.junit.jupiter.api.Test;
+import org.testng.annotations.Test;
 
-class DemoDashboardTest {
+public class DemoDashboardTest {
     @Test
-    void checkArtifactsOnDemoDashboard() {
+    public void checkArtifactsOnDemoDashboard() {
         Credentials credentials = new CredentialsProvider().provideByUserType(UserType.DEFAULT_USER);
 
         DemoDashBoardPage demoDashBoardPage = new LoginPage().login(credentials)
+                .openDashBoardPage()
                 .chooseDemoDashBoard()
                 .checkLaunchStatisticsAreaTextPresence();
 

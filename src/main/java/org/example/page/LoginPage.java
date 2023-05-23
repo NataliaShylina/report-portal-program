@@ -14,13 +14,13 @@ public class LoginPage extends BasePage {
     private final Button loginButton = getButton(By.xpath("//button[normalize-space()='Login']"));
 
 
-    public DashboardPage login(Credentials credentials) {
+    public SideBar login(Credentials credentials) {
         log.debug("login: *******");
         getWebDriver().get(BASE_PATH + "ui/#login");
         loginField.sendKey(credentials.getLogin());
         passwordField.sendKey(credentials.getPassword());
         loginButton.click();
 
-        return new DashboardPage();
+        return new SideBar();
     }
 }

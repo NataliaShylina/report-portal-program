@@ -10,6 +10,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import java.awt.*;
+
 @Log4j2
 public abstract class BasePage {
 
@@ -46,7 +48,7 @@ public abstract class BasePage {
         return new LinkedText(getWebDriver(), by);
     }
 
-    public AreaText getAreaText(By by){
-        return new AreaText(getWebDriver(),by);
+    public AreaText getAreaText(By by) {
+        return new AreaText(getWebDriver(), by);
     }
 }
