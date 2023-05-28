@@ -10,14 +10,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import java.awt.*;
-
 @Log4j2
 public abstract class BasePage {
 
     private static WebDriver driver;
 
-    static {
+    public static void setDriver(){
         log.debug("=================================");
         log.debug("Driver setuping");
         log.debug("=================================");
@@ -25,14 +23,11 @@ public abstract class BasePage {
         driver = new ChromeDriver();
     }
 
-    static final String BASE_PATH = "http://localhost:8080/";
-
     public WebDriver getWebDriver() {
         return driver;
     }
 
-    public void closeDriver() {
-
+    public static void closeDriver() {
         driver.close();
     }
 

@@ -1,45 +1,52 @@
 package org.example.base.junit5;
 
 import org.example.domain.Credentials;
+import org.example.domain.LaunchStatistics;
 import org.example.domain.UserType;
-import org.example.page.DemoDashBoardPage;
-import org.example.page.LaunchesPage;
+import org.example.page.BasePage;
 import org.example.page.LoginPage;
 import org.example.provider.CredentialsProvider;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class DemoDashboardTest {
+
+    @BeforeEach
+    void init() {
+        BasePage.setDriver();
+    }
+
+    @AfterEach
+    void clean() {
+        BasePage.closeDriver();
+    }
+
     @Test
     void checkArtifactsOnDemoDashboard() {
         Credentials credentials = new CredentialsProvider().provideByUserType(UserType.DEFAULT_USER);
 
-        DemoDashBoardPage demoDashBoardPage = new LoginPage().login(credentials)
+        new LoginPage().login(credentials)
                 .openDashBoardPage()
                 .chooseDemoDashBoard()
-                .checkLaunchStatisticsAreaTextPresence();
-
-        demoDashBoardPage.closeDriver();
+                .verifyLaunchStatisticsAreaTextPresence();
     }
 
-    //    @Test
-//    void addNewDashboard(){
-//        Credentials credentials = new CredentialsProvider().provideByUserType(UserType.DEFAULT_USER);
-//
-//        DemoDashBoardPage demoDashBoardPage = new LoginPage().login(credentials)
-//                .openDashBoardTabFromTheLauncher()
-//                .chooseAddNewDashBoard();
-//              .fillNameFieldForNewDashBoard()
-//               .addNewDashBoard();
-//        demoDashBoardPage.closeDriver();
-//    }
-    @Test
-    void verifyThatLaunchesContainsExpectedData() {
+    @ParameterizedTest
+    @CsvSource({
+            "10, 10/30/30/null/null",
+            "9, 9/25/20/5/null",
+            "8, 8/20/10/8/2",
+            "7, 7/15/5/9/1",
+    })
+    void verifyThatLaunchesContainsExpectedData(int id, @ConvertWith(LaunchStatisticsConverter.class) LaunchStatistics launchStatistics) {
         Credentials credentials = new CredentialsProvider().provideByUserType(UserType.DEFAULT_USER);
 
-        LaunchesPage launchesPage = new LoginPage().login(credentials)
+        new LoginPage().login(credentials)
                 .openLaunchesPage()
-                .verifyThatDemoAPITests10IsPresent()
-                .verifyThatDemoAPITests10ContainsDemoData();
-        launchesPage.closeDriver();
+                .verifyLaunchStatistics(id, launchStatistics);
     }
 }

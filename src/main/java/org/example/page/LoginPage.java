@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 
 @Log4j2
 public class LoginPage extends BasePage {
+    private static final String BASE_PATH = "http://localhost:8080/";
 
     private final InputField loginField = getInputField(By.xpath("//input[@placeholder='Login']"));
     private final InputField passwordField = getInputField(By.xpath("//input[@placeholder='Password']"));
