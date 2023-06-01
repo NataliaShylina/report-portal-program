@@ -19,10 +19,4 @@ public class DashboardPage extends BasePage {
 
         return new DemoDashBoardPage();
     }
-//
-//    public DemoDashBoardPage chooseAddNewDashBoard() {
-////        Waiter.waitForLoading(2);
-//        addNewDashBoardButton.click();
-//        return new DemoDashBoardPage();
-//    }
 }

@@ -42,13 +42,6 @@ public class DemoDashboardTest {
                 .verifyLaunchStatistics(id, launchStatistics);
     }
 
-    @CsvSource({
-            "10, 10/30/30/null/null",
-            "9, 9/25/20/5/null",
-            "8, 8/20/10/8/2",
-            "7, 7/15/5/9/1",
-    })
-
     @DataProvider(name = "launchStatisticsProvider")
     public Object[][] provideLaunchStatisticsDataSet(){
         return new Object[][]{
