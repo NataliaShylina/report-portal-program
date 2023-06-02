@@ -13,22 +13,23 @@ import org.openqa.selenium.chrome.ChromeDriver;
 @Log4j2
 public abstract class BasePage {
 
-    private static WebDriver driver;
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static void setDriver(){
         log.debug("=================================");
         log.debug("Driver setuping");
         log.debug("=================================");
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        driver.set(new ChromeDriver());
     }
 
     public WebDriver getWebDriver() {
-        return driver;
+        return driver.get();
     }
 
     public static void closeDriver() {
-        driver.close();
+        driver.get().close();
+        driver.remove();
     }
 
     public Button getButton(By by) {

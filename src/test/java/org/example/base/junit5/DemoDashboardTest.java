@@ -1,5 +1,6 @@
 package org.example.base.junit5;
 
+import lombok.extern.log4j.Log4j2;
 import org.example.domain.Credentials;
 import org.example.domain.LaunchStatistics;
 import org.example.domain.UserType;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvSource;
 
+@Log4j2
 class DemoDashboardTest {
 
     @BeforeEach
@@ -35,7 +37,7 @@ class DemoDashboardTest {
                 .verifyLaunchStatisticsAreaTextPresence();
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = "{index} Launch statistics: id = {0}; statistics = {1} ")
     @CsvSource({
             "10, 10/30/30/null/null",
             "9, 9/25/20/5/null",
@@ -45,6 +47,7 @@ class DemoDashboardTest {
     void verifyThatLaunchesContainsExpectedData(int id, @ConvertWith(LaunchStatisticsConverter.class) LaunchStatistics launchStatistics) {
         Credentials credentials = new CredentialsProvider().provideByUserType(UserType.DEFAULT_USER);
 
+        log.debug(" ************** Thread: " + Thread.currentThread().getName() + ", id =" + id);
         new LoginPage().login(credentials)
                 .openLaunchesPage()
                 .verifyLaunchStatistics(id, launchStatistics);

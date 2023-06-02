@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.example.domain.Credentials;
 import org.example.element.Button;
 import org.example.element.InputField;
+import org.example.utility.Waiter;
 import org.openqa.selenium.By;
 
 @Log4j2
@@ -18,6 +19,7 @@ public class LoginPage extends BasePage {
     public SideBar login(Credentials credentials) {
         log.debug("login: *******");
         getWebDriver().get(BASE_PATH + "ui/#login");
+        Waiter.waitForLoading(3);
         loginField.sendKey(credentials.getLogin());
         passwordField.sendKey(credentials.getPassword());
         loginButton.click();

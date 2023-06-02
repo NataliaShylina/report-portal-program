@@ -10,6 +10,7 @@ public class InputField extends BaseElement {
     }
 
     public void sendKey(String text){
+
         webDriver.findElement(by).sendKeys(text);
     }
 }
