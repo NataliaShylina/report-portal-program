@@ -19,9 +19,9 @@ public class LaunchesPage extends BasePage {
     private static final String SKIPPED_FIELD_TEMPLATE = ".//a[@statuses= \"SKIPPED\"] ";
 
 
-    public LaunchesPage verifyLaunchStatistics(int id, LaunchStatistics launchStatistics) {
+    public LaunchesPage verifyLaunchStatistics(LaunchStatistics launchStatistics) {
         Waiter.waitForLoading(2);
-        By blockXpath = By.xpath(String.format(LAUNCH_SIDE_GRID_NAME_TEMPLATE, id));
+        By blockXpath = By.xpath(String.format(LAUNCH_SIDE_GRID_NAME_TEMPLATE, launchStatistics.getId()));
         WebElement blockElement = getWebDriver().findElement(blockXpath);
 
         String total = findElementText(TOTAL_FIELD_TEMPLATE, blockElement);

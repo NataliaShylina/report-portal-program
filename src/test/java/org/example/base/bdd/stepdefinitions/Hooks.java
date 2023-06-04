@@ -8,4 +8,6 @@ public class Hooks {
     public void init(){
         BasePage.setDriver();
     }
+
+    //TODO: add clean method
 }
