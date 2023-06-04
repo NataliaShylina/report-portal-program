@@ -15,15 +15,16 @@ public abstract class BasePage {
 
     private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
-    public static void setDriver(){
+    public static void setDriver() {
         log.debug("=================================");
         log.debug("Driver setuping");
         log.debug("=================================");
         WebDriverManager.chromedriver().setup();
         driver.set(new ChromeDriver());
+        driver.get().manage().window().maximize();
     }
 
-    public WebDriver getWebDriver() {
+    public static WebDriver getWebDriver() {
         return driver.get();
     }
 

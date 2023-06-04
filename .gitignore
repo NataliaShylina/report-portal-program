@@ -1,2 +1,4 @@
-# ignore all logs
 *.log
+logs
+.idea
+ExtentReports
