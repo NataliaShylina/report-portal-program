@@ -1,16 +1,22 @@
 package org.example.base.api;
 
 import io.restassured.RestAssured;
+import org.example.dto.Attribute;
+import org.example.dto.BulkInfoUpdateRequest;
+import org.example.dto.BulkInfoUpdateResponse;
 import org.example.dto.CreateClusterResponse;
 import org.example.dto.CreateClustersRequest;
+import org.example.dto.Description;
 import org.example.dto.Error;
 import org.example.dto.Launch;
 import org.example.dto.LaunchList;
 import org.example.dto.Page;
+import org.example.dto.Pair;
 import org.example.dto.Statistics;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -117,5 +123,69 @@ class LaunchesAPITest {
                 .post("http://localhost:8080/api/v1/{projectName}/launch/analyze")
                 .then()
                 .statusCode(404);
+    }
+
+    //put
+    @Test
+    void bulkUpdateAttributesAndDescription() {
+        String bearerToken = "985a0930-464f-421a-985f-4fb4b755b195";
+        String existingProjectName = "superadmin_personal";
+
+        List<Attribute> attributes = new ArrayList<>();
+        Pair from = new Pair("string", "string");
+        Pair to = new Pair("string", "string");
+        Attribute attribute = new Attribute("DELETE", from, to);
+        attributes.add(attribute);
+
+        Description description = new Description("DELETE", "string");
+
+        List<Integer> ids = new ArrayList<>();
+        ids.add(0);
+
+        BulkInfoUpdateRequest bulkInfoUpdateRequest = new BulkInfoUpdateRequest(attributes, description, ids);
+
+        BulkInfoUpdateResponse bulkInfoUpdateResponseExpected = new BulkInfoUpdateResponse("Attributes successfully updated");
+
+        BulkInfoUpdateResponse bulkInfoUpdateResponse = RestAssured.given()
+                .pathParam("projectName", existingProjectName)
+                .and()
+                .header("Authorization", "Bearer " + bearerToken)
+                .and()
+                .header("Content-type", "application/json")
+                .body(bulkInfoUpdateRequest)
+                .when()
+                .put("http://localhost:8080/api/v1/{projectName}/launch/info")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(BulkInfoUpdateResponse.class);
+
+
+        assertThat(bulkInfoUpdateResponse, equalTo(bulkInfoUpdateResponseExpected));
+    }
+
+    //delete
+    @Test
+    void deleteSpecifiedLaunchByID() {
+        String bearerToken = "985a0930-464f-421a-985f-4fb4b755b195";
+        String existingProjectName = "superadmin_personal";
+        int launchID = 13;
+        Error expectedError = new Error(4041, "Launch '13' not found. Did you use correct Launch ID?");
+
+        Error errorDelete = RestAssured.given()
+                .pathParam("projectName", existingProjectName)
+                .pathParam("launchID", launchID)
+                .and()
+                .header("Authorization", "Bearer " + bearerToken)
+                .and()
+                .header("Content-type", "application/json")
+                .when()
+                .delete("http://localhost:8080/api/v1/{projectName}/launch/{launchID}")
+                .then()
+                .statusCode(404)
+                .extract()
+                .as(Error.class);
+
+        assertThat(errorDelete, equalTo(expectedError));
     }
 }
